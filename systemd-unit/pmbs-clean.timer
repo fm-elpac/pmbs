@@ -1,0 +1,11 @@
+[Unit]
+Description=Clean btrfs snapshots for pmbs
+
+[Timer]
+OnStartupSec=10min
+OnUnitInactiveSec=10min
+AccuracySec=1min
+RandomizedDelaySec=1min
+
+[Install]
+WantedBy=timers.target

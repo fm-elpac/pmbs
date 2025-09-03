@@ -1,0 +1,27 @@
+# home.toml.en.example
+# Example config file for pmbs
+
+pmbs = 1  # format version of config file
+
+subvol = "/home"  # target btrfs subvol path (make snapshot of this subvol)
+
+# Rules to keep snapshots (for auto clean)
+[[keep]]
+time = "1m"  # every 1 minute (60 seconds)
+n = 120  # keep 120 snapshots (total 2 hours)
+
+[[keep]]
+time = "5m"  # every 5 minutes (300 seconds)
+n = 48  # keep 48 snapshots (total 4 hours)
+
+[[keep]]
+time = "20m"  # every 20 minutes (1200 seconds)
+n = 48  # keep 48 snapshots (total 16 hours)
+
+[[keep]]
+time = "1h"  # every 1 hour (3600 seconds)
+n = 48  # keep 48 snapshots (total 2 days)
+
+[[keep]]
+time = "1d"  # every 1 day (86400 seconds)
+n = 7  # keep 7 snapshots (total 7 days)

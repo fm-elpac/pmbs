@@ -1,0 +1,5 @@
+[Unit]
+Description=Clean btrfs snapshots for pmbs
+
+[Service]
+ExecStart=/usr/bin/pmbs config clean

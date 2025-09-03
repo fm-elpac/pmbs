@@ -1,0 +1,108 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - run: deno fmt --check
+      - run: cargo fmt --check
+
+      - run: cargo build
+      - run: cargo test
+      - run: cargo doc
+
+      # release: x86_64-unknown-linux-gnu
+      - run: cargo build --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pmbs
+          path: target/release/pmbs
+
+      # setup
+      - run: |
+          rustup target add aarch64-unknown-linux-gnu riscv64gc-unknown-linux-gnu
+      - run: |
+          sudo apt-get update && \
+          sudo apt-get -y install \
+          binutils-aarch64-linux-gnu gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
+          binutils-riscv64-linux-gnu gcc-riscv64-linux-gnu g++-riscv64-linux-gnu
+      # release: aarch64-unknown-linux-gnu
+      - run: cargo build --release --target aarch64-unknown-linux-gnu
+        env:
+          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
+          CC_aarch64_unknown_linux_gnu: aarch64-linux-gnu-gcc
+          CXX_aarch64_unknown_linux_gnu: aarch64-linux-gnu-g++
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pmbs-aarch64
+          path: target/aarch64-unknown-linux-gnu/release/pmbs
+      # release: riscv64gc-unknown-linux-gnu
+      - run: cargo build --release --target riscv64gc-unknown-linux-gnu
+        env:
+          CARGO_TARGET_RISCV64GC_UNKNOWN_LINUX_GNU_LINKER: riscv64-linux-gnu-gcc
+          CC_riscv64gc_unknown_linux_gnu: riscv64-linux-gnu-gcc
+          CXX_riscv64gc_unknown_linux_gnu: riscv64-linux-gnu-g++
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pmbs-rv64gc
+          path: target/riscv64gc-unknown-linux-gnu/release/pmbs
+
+      # toolbox
+      - run: |
+          sudo apt-get update && \
+          sudo apt-get -y install podman-toolbox
+      - run: echo "SHELL=/usr/bin/bash" >> "$GITHUB_ENV"
+
+      # AUR (ArchLinux)
+      - run: |
+          cp target/release/pmbs build-aur/ && \
+          cp systemd-unit/* build-aur/ && \
+          cp etc/* build-aur/
+      - run: toolbox create -y -i quay.io/toolbx/arch-toolbox arch
+      - run: |
+          toolbox run -c arch \
+          sudo pacman -Syu --noconfirm
+      - run: |
+          toolbox run -c arch \
+          sudo pacman -S --noconfirm btrfs-progs
+      - run: |
+          cd build-aur && \
+          toolbox run -c arch \
+          makepkg
+      # upload pkg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pmbs-bin-0.1.0a2-1-x86_64.pkg.tar.zst
+          path: build-aur/pmbs-bin-0.1.0a2-1-x86_64.pkg.tar.zst
+
+      # RPM (Fedora)
+      - run: toolbox create -y -d fedora -r 42
+      - run: |
+          toolbox run -c fedora-toolbox-42 \
+          sudo dnf install -y rpm-build rpm-devel rpmdevtools btrfs-progs
+      - run: |
+          toolbox run -c fedora-toolbox-42 \
+          rpmdev-setuptree
+      - run: |
+          cp build-rpm/pmbs.spec ~/rpmbuild/SPECS/ && \
+          cp target/release/pmbs ~/rpmbuild/SOURCES/ && \
+          cp systemd-unit/* ~/rpmbuild/SOURCES/ && \
+          cp etc/* ~/rpmbuild/SOURCES/
+      - run: |
+          toolbox run -c fedora-toolbox-42 \
+          rpmbuild -bb ~/rpmbuild/SPECS/pmbs.spec
+      # upload rpm
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pmbs-0.1.0a2-1.fc42.x86_64.rpm
+          path: ~/rpmbuild/RPMS/x86_64/pmbs-0.1.0a2-1.fc42.x86_64.rpm

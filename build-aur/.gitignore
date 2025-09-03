@@ -1,0 +1,10 @@
+*.service
+*.timer
+*.example
+
+pmbs
+
+pkg/
+src/
+
+*.pkg.tar.zst

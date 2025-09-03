@@ -1,0 +1,11 @@
+[Unit]
+Description=Create btrfs snapshot (every minute) for pmbs
+
+[Timer]
+OnStartupSec=120
+OnUnitInactiveSec=60
+AccuracySec=1
+RandomizedDelaySec=1
+
+[Install]
+WantedBy=timers.target
