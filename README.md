@@ -20,6 +20,7 @@ australis) 软件
 - <https://notabug.org/fm-elpac/pmbs>
 - <https://framagit.org/fm-elpac/pmbs>
 - <https://git.disroot.org/fm-elpac/pmbs>
+- <https://git.pub.solar/fm-elpac/pmbs>
 - <https://gitlink.org.cn/fm-elpac/pmbs>
 
 胖喵必快使用 `root` 权限创建 **只读** btrfs 快照, 所以普通用户 (无 root)
