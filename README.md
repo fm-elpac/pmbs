@@ -11,6 +11,9 @@ Make btrfs snapshot (every minute), and auto clean.
 正式名称: 紫腹巨蚊 (Toxorhynchites gravelyi) 系列 澳大利亚海神草 (Posidonia
 australis) 软件
 
+**免责声明: 这是开源软件, 没有任何担保, 用户应该承担使用本软件造成的一切后果.**
+如果不能接受, 请勿使用本软件 !
+
 ---
 
 镜像 (mirror):
@@ -40,7 +43,7 @@ recovery from snapshot).
   [release](https://github.com/fm-elpac/pmbs/releases):
 
   ```sh
-  sudo pacman -U pmbs-bin-0.1.0a2-1-x86_64.pkg.tar.zst
+  sudo pacman -U pmbs-bin-0.1.0a3-1-x86_64.pkg.tar.zst
   ```
 
 - Fedora CoreOS (RPM):
@@ -51,7 +54,7 @@ recovery from snapshot).
   [release](https://github.com/fm-elpac/pmbs/releases):
 
   ```sh
-  sudo rpm-ostree install pmbs-0.1.0a2-1.fc42.x86_64.rpm
+  sudo rpm-ostree install pmbs-0.1.0a3-1.fc42.x86_64.rpm
   ```
 
   然后重启系统.
@@ -79,6 +82,32 @@ recovery from snapshot).
   Keep rules should be written in order: `time` of one rule should be shorter
   than the next rule, for example: `1m` (minute), `5m`, `1h` (hour), `1d` (day).
   Number to keep (`n`) should be larger than 0.
+
+  ---
+
+  **注意: 请关闭 btrfs `quota` !!** 当 quota 和大量 snapshot 同时使用,
+  系统会非常慢 (经常卡死). 检查 quota 是否启用, 比如:
+
+  **Please disable btrfs `quota` !!** When quota is used with a lot snapshots,
+  the system will be very slow. Check if quota is enabled, for example:
+
+  ```sh
+  > sudo btrfs qgroup show /home
+  ERROR: can't list qgroups: quotas not enabled
+  ```
+
+  如果启用了, 禁用 quota, 比如:
+
+  If quota is enabled, disable it, for example:
+
+  ```sh
+  sudo btrfs quota disable /home
+  ```
+
+  参考资料 (reference):
+
+  - <https://www.suse.com/support/kb/doc/?id=000020696>
+  - <https://forums.gentoo.org/viewtopic-t-1164227-start-0.html>
 
 - (2) 启用 systemd 服务 (定期快照/清理):
 
@@ -108,6 +137,30 @@ recovery from snapshot).
 ## 常见问题 (FAQ)
 
 TODO
+
+## 例行更新维护策略 (Release new version policy)
+
+适用于本仓库 (pmbs). 当下列条件任意一条满足时, 本仓库的软件需要发布新的维护版本
+(版本号 `x.y.z` 其中 `z` + 1). "更新所有依赖" 并重新编译 (构建):
+
+When any of the following is true, this repo should release a new version
+(version number `x.y.z`, `z` + 1). Update all dependencies, and rebuild:
+
+- rustc 发布新版本 (版本号 `x.y.z` 其中 `x` 或 `y` 变化)
+
+  rustc release a new version (version number `x.y.z`, `x` or `y` change)
+
+- 各依赖或本仓库发布重要的安全更新 (修复比较严重的安全漏洞)
+
+  The dependencies or this repo release an important security update.
+
+当前重要依赖的版本号:
+
+Current version number of important dependencies:
+
+- rustc 1.89.0 (29483883e 2025-08-04)
+
+  <https://github.com/rust-lang/rust>
 
 ## 文档 (doc)
 

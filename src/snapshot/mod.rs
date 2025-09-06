@@ -12,7 +12,7 @@ use crate::{clean::ls_snapshot, cli::sh_run, config::ConfigEnv};
 
 mod t;
 
-pub use t::{DIR_PMBS, SYMLINK_LATEST, format_t, get_t, get_year};
+pub use t::{DIR_PMBS, SYMLINK_LATEST, format_t, format_t_local, get_t, get_year};
 
 /// 创建指定 subvol 的快照
 pub fn make_snapshot(config: &ConfigEnv, subvol: &str) -> Result<(), ExitCode> {

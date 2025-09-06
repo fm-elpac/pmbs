@@ -27,6 +27,9 @@ jobs:
         with:
           name: pmbs
           path: target/release/pmbs
+      # 检查配置文件
+      - run: cd etc && cp home.toml.en.example home.en.toml && cp home.toml.zh.example home.zh.toml
+      - run: env PMBS_DIR_ETC=etc RUST_LOG=debug target/release/pmbs config test
 
       # setup
       - run: |
@@ -82,8 +85,8 @@ jobs:
       # upload pkg
       - uses: actions/upload-artifact@v4
         with:
-          name: pmbs-bin-0.1.0a2-1-x86_64.pkg.tar.zst
-          path: build-aur/pmbs-bin-0.1.0a2-1-x86_64.pkg.tar.zst
+          name: pmbs-bin-0.1.0a3-1-x86_64.pkg.tar.zst
+          path: build-aur/pmbs-bin-0.1.0a3-1-x86_64.pkg.tar.zst
 
       # RPM (Fedora)
       - run: toolbox create -y -d fedora -r 42
@@ -104,5 +107,8 @@ jobs:
       # upload rpm
       - uses: actions/upload-artifact@v4
         with:
-          name: pmbs-0.1.0a2-1.fc42.x86_64.rpm
-          path: ~/rpmbuild/RPMS/x86_64/pmbs-0.1.0a2-1.fc42.x86_64.rpm
+          name: pmbs-0.1.0a3-1.fc42.x86_64.rpm
+          path: ~/rpmbuild/RPMS/x86_64/pmbs-0.1.0a3-1.fc42.x86_64.rpm
+
+      # DEB (Ubuntu)
+      # TODO

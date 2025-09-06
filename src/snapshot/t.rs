@@ -1,7 +1,7 @@
 //! .pmbs 快照目录结构定义
 use std::time::SystemTime;
 
-use chrono::{DateTime, Datelike, Utc, format::SecondsFormat};
+use chrono::{DateTime, Datelike, Local, Utc, format::SecondsFormat};
 
 /// subvol 快照保存目录 /.pmbs/2025/T
 pub const DIR_PMBS: &'static str = ".pmbs";
@@ -29,4 +29,10 @@ pub fn get_year(t: u64) -> i32 {
 /// 时间戳 (UNIX_EPOCH 开始的秒数) 转换为可读文本
 pub fn format_t(t: u64) -> String {
     get_datetime(t).to_rfc3339_opts(SecondsFormat::Secs, true)
+}
+
+/// 使用本地时区显示时间戳
+pub fn format_t_local(t: u64) -> String {
+    let local = get_datetime(t).with_timezone(&Local);
+    local.to_rfc3339_opts(SecondsFormat::Secs, false)
 }

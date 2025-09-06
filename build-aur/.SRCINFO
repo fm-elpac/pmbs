@@ -1,6 +1,6 @@
 pkgbase = pmbs-bin
 	pkgdesc = Make btrfs snapshot (every minute), and auto clean
-	pkgver = 0.1.0a2
+	pkgver = 0.1.0a3
 	pkgrel = 1
 	url = https://github.com/fm-elpac/pmbs
 	arch = x86_64
@@ -18,7 +18,7 @@ pkgbase = pmbs-bin
 	sha256sums = 36592709bb8efeae2b0aac8663f72cad2c70d45944ade418eb6acb0e1a1c31d8
 	sha256sums = f68f85e04a9ee86d1f0da1951f4fb38986045c3291863d42615089bc97e55c01
 	sha256sums = 59da7dee13aa0cf2cb66d0ef0a6ca92bc1a140f14acebae8f62c9d21ea10c25e
-	sha256sums = addaae07cb7d6a620722f66a911289edcf2c2ee8cdb4ad415f234b29d240d6ec
+	sha256sums = d52a424c5f63138b7354613948334a3e1547b7cd0d9d11e607ae601fcd5b1908
 	sha256sums = 111f93b5b7942dd174faf9876645af6a6c666ad97b568273c51b760d5b790fd0
 
 pkgname = pmbs-bin

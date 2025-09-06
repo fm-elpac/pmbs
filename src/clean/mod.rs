@@ -137,6 +137,9 @@ pub fn decide(
             }
         }
     }
+    // 排序 (清理应该从最旧的开始)
+    clean.sort_by(|a, b| a.t.cmp(&b.t));
+
     debug!("keep  {}", debug_snapshot_list(&keep));
     debug!("clean  {}", debug_snapshot_list(&clean));
     (keep, clean)

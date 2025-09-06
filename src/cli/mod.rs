@@ -17,7 +17,7 @@ pub use sh::sh_run;
 use crate::{
     clean::{Snapshot, decide, ls_snapshot, safe_rm_subvol_list},
     config::{ConfigEnv, PmbsConfigFile, get_env_config, list_config, read_config},
-    snapshot::{format_t, get_t, make_snapshot},
+    snapshot::{format_t_local, get_t, make_snapshot},
 };
 
 use help::bad_cli_arg;
@@ -55,7 +55,12 @@ fn c_ls(a: Vec<String>) -> Result<(), ExitCode> {
     for i in list {
         let latest = if i.latest { "\t*latest" } else { "" };
 
-        println!("{}\t{}{}", i.p.to_string_lossy(), format_t(i.t), latest);
+        println!(
+            "{}\t{}{}",
+            i.p.to_string_lossy(),
+            format_t_local(i.t),
+            latest
+        );
     }
     Ok(())
 }
@@ -230,10 +235,10 @@ fn c_config_test_clean(a: Vec<String>) -> Result<(), ExitCode> {
     match get_clean(path) {
         Some((_, keep, clean)) => {
             for i in keep {
-                println!("keep {}  {}", i.path, format_t(i.t));
+                println!("keep {}  {}", i.path, format_t_local(i.t));
             }
             for i in clean {
-                println!("clean {}  {}", i.path, format_t(i.t));
+                println!("clean {}  {}", i.path, format_t_local(i.t));
             }
             Ok(())
         }
@@ -262,6 +267,15 @@ fn get_clean(path: &str) -> Option<(PmbsConfigFile, Vec<Snapshot>, Vec<Snapshot>
                 keep.len(),
                 clean.len()
             );
+            // 检查错误
+            if total != (keep.len() + clean.len()) {
+                panic!(
+                    "bad clean, total = {}, keep = {}, clean = {}",
+                    total,
+                    keep.len(),
+                    clean.len()
+                );
+            }
             Some((config, keep, clean))
         }
         None => None,

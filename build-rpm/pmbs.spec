@@ -1,5 +1,5 @@
 Name:      pmbs
-Version:   0.1.0a2
+Version:   0.1.0a3
 Release:   1%{?dist}
 Summary:   Make btrfs snapshot (every minute), and auto clean
 License:   MIT
