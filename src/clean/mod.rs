@@ -101,6 +101,28 @@ pub fn decide(
     // 容忍系统时间误差: 时间检查减少 10 秒
     const KEEP_S: u64 = 10;
 
+    // 处理临时存储: 保留最后一条, 其余全部丢弃
+    fn clear_tmp(tmp: &mut Vec<Snapshot>, keep: &mut Vec<Snapshot>, clean: &mut Vec<Snapshot>) {
+        if let Some(i) = tmp.pop() {
+            keep.push(i);
+        }
+        // 其余的全部丢弃
+        clear_tmp_all(tmp, clean);
+    }
+
+    fn clear_tmp_all(tmp: &mut Vec<Snapshot>, clean: &mut Vec<Snapshot>) {
+        loop {
+            match tmp.pop() {
+                Some(i) => {
+                    clean.push(i);
+                }
+                None => {
+                    break;
+                }
+            }
+        }
+    }
+
     if snapshot.len() > 0 {
         // 当前保留规则
         let mut rule = ki.next();
@@ -108,6 +130,9 @@ pub fn decide(
         let t0 = snapshot[0].t - KEEP_LATEST;
         // 当前保留时间戳
         let mut t = t0;
+
+        // 临时存储的快照列表
+        let mut tmp: Vec<Snapshot> = Vec::new();
 
         // 决定每个快照的命运
         for i in snapshot {
@@ -121,21 +146,30 @@ pub fn decide(
             match rule {
                 Some(s) => {
                     if i.t > (t - s + KEEP_S) {
-                        // 被遮盖, 丢弃
-                        clean.push(i.clone());
+                        // 被遮盖, 放入临时存储 (而不是直接丢弃)
+                        tmp.push(i.clone());
                     } else {
-                        // 未被遮盖, 消耗一条规则
-                        keep.push(i.clone());
+                        // 未被遮盖
+                        // 保留之前临时存储的最后一条 (一个被遮盖区间内, 保留最后一条)
+                        clear_tmp(&mut tmp, &mut keep, &mut clean);
+
+                        // 更新保留时间基准
                         t = i.t;
+                        // 当前快照: 放入临时存储
+                        tmp.push(i);
+                        // 消耗一条规则
                         rule = ki.next();
                     }
                 }
                 None => {
                     // 规则用尽, 全部丢弃
+                    clear_tmp_all(&mut tmp, &mut clean);
                     clean.push(i.clone());
                 }
             }
         }
+        // 处理剩余的临时存储
+        clear_tmp(&mut tmp, &mut keep, &mut clean);
     }
     // 排序 (清理应该从最旧的开始)
     clean.sort_by(|a, b| a.t.cmp(&b.t));

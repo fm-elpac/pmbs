@@ -119,6 +119,29 @@ pub fn get_re_keep_time() -> Regex {
     Regex::new(r"^[1-9][0-9_]*[mhd]$").unwrap()
 }
 
+/// 解析 time 字符串, 转换为秒
+fn time_to_s(time: &str) -> u64 {
+    let mut time = time.to_string();
+    // 最后一个字符 (单位)
+    // 之间已经通过了正则表达式的检查, 此处的字符串已经是纯 ASCII, 可以不考虑多字节 utf-8
+    let unit = time.split_off(time.len() - 1);
+
+    let time: u64 = FromStr::from_str(&time).unwrap();
+    let unit: u64 = match unit.as_str() {
+        // 分钟 = 60 秒
+        "m" => 60,
+        // 小时 = 3600 秒
+        "h" => 3600,
+        // 天 = 86400 秒
+        "d" => 86400,
+
+        _ => unreachable!(),
+    };
+
+    // 计算时间
+    time * unit
+}
+
 /// 检查配置文件, 并解析 time 字符串
 fn check_config(c: &mut PmbsConfig) -> bool {
     // 配置文件版本
@@ -152,26 +175,7 @@ fn check_config(c: &mut PmbsConfig) -> bool {
             error!("bad time = {}", i.time);
             return false;
         }
-
-        let mut time = i.time.clone();
-        // 最后一个字符 (单位)
-        // 之间已经通过了正则表达式的检查, 此处的字符串已经是纯 ASCII, 可以不考虑多字节 utf-8
-        let unit = time.split_off(time.len() - 1);
-
-        let time: u64 = FromStr::from_str(&time).unwrap();
-        let unit: u64 = match unit.as_str() {
-            // 分钟 = 60 秒
-            "m" => 60,
-            // 小时 = 3600 秒
-            "h" => 3600,
-            // 天 = 86400 秒
-            "d" => 86400,
-
-            _ => unreachable!(),
-        };
-
-        // 计算时间
-        i.s = time * unit;
+        i.s = time_to_s(&i.time);
 
         debug!("time {} = {}s", i.time, i.s);
     }
@@ -188,7 +192,7 @@ fn check_config(c: &mut PmbsConfig) -> bool {
     let mut last_s = 0;
     for i in &c.keep {
         // 保留快照太多
-        if i.n > 500 {
+        if i.n > 200 {
             warn!("too big n = {} !", i.n);
         }
         // 间隔时间太长 (超过 31 天)
@@ -210,7 +214,7 @@ fn check_config(c: &mut PmbsConfig) -> bool {
     }
     // 保留了太多快照
     debug!("sum_n = {}", sum_n);
-    if sum_n > 1000 {
+    if sum_n > 500 {
         warn!("too many rules !  {}", sum_n);
     }
 
@@ -240,6 +244,24 @@ pub fn read_config(path: &Path) -> Option<PmbsConfigFile> {
     }
 }
 
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    /// 解析配置文件中的 time 字符串
+    #[test]
+    fn parse_time() {
+        assert_eq!(time_to_s("1m"), 60);
+        assert_eq!(time_to_s("5m"), 300);
+        assert_eq!(time_to_s("20m"), 1200);
+        assert_eq!(time_to_s("1h"), 3600);
+        assert_eq!(time_to_s("2h"), 7200);
+        assert_eq!(time_to_s("1d"), 8_6400);
+        assert_eq!(time_to_s("7d"), 60_4800);
+        assert_eq!(time_to_s("28d"), 241_9200);
+    }
+}
+
 /// 对正则表达式匹配进行测试
 #[cfg(test)]
 mod test_re {
@@ -263,7 +285,7 @@ mod test_re {
     }
 
     #[test]
-    fn re_keep_time_should_not_match() {
+    fn re_keep_time_not_match() {
         let re = get_re_keep_time();
 
         // 空

@@ -65,7 +65,7 @@ mod test_re {
 
     // 不匹配: 空
     #[test]
-    fn re_should_not_match_empty() {
+    fn re_not_match_empty() {
         let re = get_re_safe_check_path();
 
         assert_eq!(re.is_match(""), false);
@@ -83,7 +83,7 @@ mod test_re {
 
     // 不匹配: 太短
     #[test]
-    fn re_should_not_match_short() {
+    fn re_not_match_short() {
         let re = get_re_safe_check_path();
 
         assert_eq!(re.is_match("/.pmbs/1/1756392923"), false);
@@ -103,7 +103,7 @@ mod test_re {
 
     // 不匹配: 系统
     #[test]
-    fn re_should_not_match_system() {
+    fn re_not_match_system() {
         let re = get_re_safe_check_path();
 
         assert_eq!(re.is_match("/"), false);
@@ -119,7 +119,7 @@ mod test_re {
 
     // 不匹配: 错误字符
     #[test]
-    fn re_should_not_match_char() {
+    fn re_not_match_char() {
         let re = get_re_safe_check_path();
 
         assert_eq!(re.is_match("/.pmbs/2025/1756392923x"), false);

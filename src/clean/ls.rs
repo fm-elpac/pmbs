@@ -140,14 +140,14 @@ mod test_re {
 
     // 不匹配: 空
     #[test]
-    fn re_year_should_not_match_empty() {
+    fn re_year_not_match_empty() {
         let re = get_re_year();
 
         assert_eq!(re.is_match(""), false);
     }
 
     #[test]
-    fn re_t_should_not_match_empty() {
+    fn re_t_not_match_empty() {
         let re = get_re_t();
 
         assert_eq!(re.is_match(""), false);
@@ -155,7 +155,7 @@ mod test_re {
 
     // 不匹配: 太短
     #[test]
-    fn re_year_should_not_match_short() {
+    fn re_year_not_match_short() {
         let re = get_re_year();
 
         assert_eq!(re.is_match("1"), false);
@@ -165,7 +165,7 @@ mod test_re {
     }
 
     #[test]
-    fn re_t_should_not_match_short() {
+    fn re_t_not_match_short() {
         let re = get_re_t();
 
         assert_eq!(re.is_match("175639292"), false);
@@ -177,7 +177,7 @@ mod test_re {
 
     // 不匹配: 非数字
     #[test]
-    fn re_year_should_not_match_char() {
+    fn re_year_not_match_char() {
         let re = get_re_year();
 
         assert_eq!(re.is_match("202a"), false);
@@ -192,7 +192,7 @@ mod test_re {
     }
 
     #[test]
-    fn re_t_should_not_match_char() {
+    fn re_t_not_match_char() {
         let re = get_re_t();
 
         assert_eq!(re.is_match("175639292C"), false);
