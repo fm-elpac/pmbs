@@ -80,7 +80,7 @@ BUG (比如 Linux 内核, btrfs 文件系统的 BUG) 等情况, 仍然会发生�
 
 - `build-aur/`: 用于构建 ArchLinux 软件包 (含有 AUR 的 `PKGBUILD`).
 
-- `build-rpm`: 用于构建 RPM 软件包 (用于 Fedora CoreOS).
+- `build-rpm/`: 用于构建 RPM 软件包 (用于 Fedora CoreOS).
 
 - `.github/`: CI (自动化测试编译).
 

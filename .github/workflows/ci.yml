@@ -111,4 +111,9 @@ jobs:
           path: ~/rpmbuild/RPMS/x86_64/pmbs-0.1.0a3-1.fc42.x86_64.rpm
 
       # DEB (Ubuntu)
-      # TODO
+      - run: cd build-deb && make
+      # upload deb
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pmbs.deb
+          path: build-deb/pmbs.deb

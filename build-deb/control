@@ -1,0 +1,10 @@
+Package: pmbs
+Version: 0.1.0-a3
+Architecture: amd64
+Depends: libc6, btrfs-progs
+Priority: optional
+Section: utils
+Homepage: https://github.com/fm-elpac/pmbs
+Maintainer: secext2022 <secext2022@outlook.com>
+Description: Make btrfs snapshot (every minute), and auto clean.
+ See <https://crates.io/crates/pmbs>
