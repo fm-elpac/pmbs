@@ -7,6 +7,7 @@ arch=('x86_64')
 url="https://github.com/fm-elpac/pmbs"
 license=('MIT')
 depends=('btrfs-progs>=6.16')
+conflicts=('pmbs')
 source=('pmbs'
         'pmbs-snapshot.service'
         'pmbs-snapshot.timer'

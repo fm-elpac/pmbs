@@ -35,7 +35,7 @@ recovery from snapshot).
 
 ## 安装 (install)
 
-- ArchLinux (AUR): TODO
+- ArchLinux (AUR): <https://aur.archlinux.org/packages/pmbs>
 
   或者从 [release](https://github.com/fm-elpac/pmbs/releases) 下载安装包:
 

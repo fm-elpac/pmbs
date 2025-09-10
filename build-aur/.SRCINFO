@@ -6,6 +6,7 @@ pkgbase = pmbs-bin
 	arch = x86_64
 	license = MIT
 	depends = btrfs-progs>=6.16
+	conflicts = pmbs
 	source = pmbs
 	source = pmbs-snapshot.service
 	source = pmbs-snapshot.timer
