@@ -1,6 +1,6 @@
 # Maintainer: secext2022 <secext2022 at outlook dot com>
 pkgname=pmbs-bin
-pkgver=0.1.0a3
+pkgver=0.1.0a4
 pkgrel=1
 pkgdesc="Make btrfs snapshot (every minute), and auto clean"
 arch=('x86_64')
@@ -8,20 +8,11 @@ url="https://github.com/fm-elpac/pmbs"
 license=('MIT')
 depends=('btrfs-progs>=6.16')
 conflicts=('pmbs')
+optdepends=('rsync: send snapshot to remote machine')
 source=('pmbs'
-        'pmbs-snapshot.service'
-        'pmbs-snapshot.timer'
-        'pmbs-clean.service'
-        'pmbs-clean.timer'
-        'home.toml.zh.example'
-        'home.toml.en.example')
+        'pmbs-src.tar')
 sha256sums=('SKIP'
-            'b059c4aa8c391614581a987b7f04003de6049a68ae5c327f0f4ecb90301e9684'
-            '36592709bb8efeae2b0aac8663f72cad2c70d45944ade418eb6acb0e1a1c31d8'
-            'f68f85e04a9ee86d1f0da1951f4fb38986045c3291863d42615089bc97e55c01'
-            '59da7dee13aa0cf2cb66d0ef0a6ca92bc1a140f14acebae8f62c9d21ea10c25e'
-            'd52a424c5f63138b7354613948334a3e1547b7cd0d9d11e607ae601fcd5b1908'
-            '111f93b5b7942dd174faf9876645af6a6c666ad97b568273c51b760d5b790fd0')
+            'SKIP')
 
 build() {
   cd "$srcdir"
@@ -30,11 +21,7 @@ build() {
 package() {
   cd "$srcdir"
 
-  install -Dm755 -t "$pkgdir/usr/bin/" pmbs
-  install -Dm644 -t "$pkgdir/usr/lib/systemd/system/" pmbs-snapshot.service
-  install -Dm644 -t "$pkgdir/usr/lib/systemd/system/" pmbs-snapshot.timer
-  install -Dm644 -t "$pkgdir/usr/lib/systemd/system/" pmbs-clean.service
-  install -Dm644 -t "$pkgdir/usr/lib/systemd/system/" pmbs-clean.timer
-  install -Dm644 -t "$pkgdir/etc/pmbs/" home.toml.zh.example
-  install -Dm644 -t "$pkgdir/etc/pmbs/" home.toml.en.example
+  install -Dm755 -t "${pkgdir}/usr/bin/" pmbs
+
+  make FROM=. TO=${pkgdir} install-config
 }

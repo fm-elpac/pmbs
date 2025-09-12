@@ -1,10 +1,7 @@
-*.service
-*.timer
-*.example
-
 pmbs
+*.tar
 
-pkg/
 src/
+pkg/
 
 *.pkg.tar.zst

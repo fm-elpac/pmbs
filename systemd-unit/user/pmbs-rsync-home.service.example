@@ -1,0 +1,21 @@
+# Example systemd unit files for use rsync with pmbs
+#
+# Please copy these files to user config dir, and edit them, for example:
+#
+# mkdir -p ~/.config/systemd/user/
+# cp /usr/lib/systemd/user/pmbs-rsync-home.service.example ~/.config/systemd/user/pmbs-rsync-home.service
+# cp /usr/lib/systemd/user/pmbs-rsync-home.timer.example ~/.config/systemd/user/pmbs-rsync-home.timer
+# mkdir -p ~/.config/pmbs/rsync/
+# cp /etc/pmbs/rsync/rsync-home.sh.example ~/.config/pmbs/rsync/rsync-home.sh
+# cp /etc/pmbs/rsync/rsync-home-exclude.txt.example ~/.config/pmbs/rsync/rsync-home-exclude.txt
+#
+# nano ~/.config/pmbs/rsync/rsync-home.sh
+#
+# systemd --user daemon-reload
+# systemd --user enable --now pmbs-rsync-home.timer
+
+[Unit]
+Description=pmbs rsync home
+
+[Service]
+ExecStart=%h/.config/pmbs/rsync/rsync-home.sh

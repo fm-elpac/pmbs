@@ -1,0 +1,15 @@
+# Example systemd unit files for use rsync with pmbs
+#
+# please see /usr/lib/systemd/user/pmbs-rsync-home.service.example
+
+[Unit]
+Description=pmbs rsync home
+
+[Timer]
+OnStartupSec=10min
+OnUnitInactiveSec=5min
+AccuracySec=1min
+RandomizedDelaySec=1min
+
+[Install]
+WantedBy=timers.target

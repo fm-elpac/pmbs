@@ -1,2 +1,4 @@
 /etc/pmbs/home.toml.zh.example
 /etc/pmbs/home.toml.en.example
+/etc/pmbs/rsync/rsync-home.sh.example
+/etc/pmbs/rsync/rsync-home-exclude.txt.example

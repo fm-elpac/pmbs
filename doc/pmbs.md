@@ -76,7 +76,7 @@ BUG (比如 Linux 内核, btrfs 文件系统的 BUG) 等情况, 仍然会发生�
 
 - `systemd-unit/`: systemd 服务文件, 用于实现 systemd timer.
 
-- `etc/`: 配置文件示例.
+- `etc-pmbs/`: 配置文件示例.
 
 - `build-aur/`: 用于构建 ArchLinux 软件包 (含有 AUR 的 `PKGBUILD`).
 

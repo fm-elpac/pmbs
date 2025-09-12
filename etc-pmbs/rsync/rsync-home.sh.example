@@ -1,0 +1,47 @@
+#!/usr/bin/bash
+# Example files for use rsync with pmbs
+#
+# please see /usr/lib/systemd/user/pmbs-rsync-home.service.example
+#
+# 参考文档:
+# https://wiki.archlinux.org/title/Rsync
+# https://download.samba.org/pub/rsync/rsync.1
+
+# 本机源目录
+# 以 / 结尾, 确保 rsync 复制目录
+FROM=$(realpath /home/.pmbs/latest)/USERNAME/
+
+# 目标目录 (备份服务器)
+TO=REMOTE:/PATH/TO/DIR
+
+# 忽略文件列表
+EXCLUDE=~/.config/pmbs/rsync/rsync-home-exclude.txt
+
+# 方便调试
+echo 开始同步 rsync: $FROM "->" $TO
+
+
+# rsync 命令行参数解释
+#
+# -r  递归 (复制目录)
+# -l  复制符号链接
+# -p  复制文件权限
+# -t  复制文件修改时间
+#
+# -H  保留硬链接
+# -x  保持在一个文件系统上 (不跨越挂载点)
+# --del  如果源删除了文件, 目标也删除文件
+# --delete-excluded  源忽略的文件, 在目标也删除
+# -z  传输过程启用压缩
+#
+# --exclude-from=  忽略文件列表
+#
+# -v  详细输出
+# -n  模拟执行 (并不实际执行)
+# --stats  输出传输状态
+# --progress  输出传输进度
+# -h  方便阅读的数字格式
+#
+#rsync -rlptHxz --del --delete-excluded --exclude-from=$EXCLUDE -vh --stats --progress -n "$FROM" "$TO"
+
+rsync -rlptHxz --del --delete-excluded --exclude-from=$EXCLUDE -vh --stats  "$FROM" "$TO"

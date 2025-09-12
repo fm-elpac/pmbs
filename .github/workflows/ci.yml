@@ -28,8 +28,8 @@ jobs:
           name: pmbs-x86_64
           path: target/release/pmbs
       # 检查配置文件
-      - run: cd etc && cp home.toml.en.example home.en.toml && cp home.toml.zh.example home.zh.toml
-      - run: env PMBS_DIR_ETC=etc RUST_LOG=debug target/release/pmbs config test
+      - run: cd etc-pmbs && cp home.toml.en.example home.en.toml && cp home.toml.zh.example home.zh.toml
+      - run: env PMBS_DIR_ETC=etc-pmbs RUST_LOG=debug target/release/pmbs config test
 
       # setup
       - run: |
@@ -66,11 +66,13 @@ jobs:
           sudo apt-get -y install podman-toolbox
       - run: echo "SHELL=/usr/bin/bash" >> "$GITHUB_ENV"
 
+      # pmbs-src.tar
+      - run: make pmbs-src
+
       # AUR (ArchLinux)
       - run: |
           cp target/release/pmbs build-aur/ && \
-          cp systemd-unit/* build-aur/ && \
-          cp etc/* build-aur/
+          cp pmbs-src.tar build-aur/
       - run: toolbox create -y -i quay.io/toolbx/arch-toolbox arch
       - run: |
           toolbox run -c arch \
@@ -85,30 +87,29 @@ jobs:
       # upload pkg
       - uses: actions/upload-artifact@v4
         with:
-          name: pmbs-bin-0.1.0a3-1-x86_64.pkg.tar.zst
-          path: build-aur/pmbs-bin-0.1.0a3-1-x86_64.pkg.tar.zst
+          name: pmbs-bin-0.1.0a4-1-x86_64.pkg.tar.zst
+          path: build-aur/pmbs-bin-0.1.0a4-1-x86_64.pkg.tar.zst
 
       # RPM (Fedora)
       - run: toolbox create -y -d fedora -r 42
       - run: |
           toolbox run -c fedora-toolbox-42 \
-          sudo dnf install -y rpm-build rpm-devel rpmdevtools btrfs-progs
+          sudo dnf install -y rpm-build rpm-devel rpmdevtools make btrfs-progs
       - run: |
           toolbox run -c fedora-toolbox-42 \
           rpmdev-setuptree
       - run: |
           cp build-rpm/pmbs.spec ~/rpmbuild/SPECS/ && \
           cp target/release/pmbs ~/rpmbuild/SOURCES/ && \
-          cp systemd-unit/* ~/rpmbuild/SOURCES/ && \
-          cp etc/* ~/rpmbuild/SOURCES/
+          cp pmbs-src.tar ~/rpmbuild/SOURCES/
       - run: |
           toolbox run -c fedora-toolbox-42 \
           rpmbuild -bb ~/rpmbuild/SPECS/pmbs.spec
       # upload rpm
       - uses: actions/upload-artifact@v4
         with:
-          name: pmbs-0.1.0a3-1.fc42.x86_64.rpm
-          path: ~/rpmbuild/RPMS/x86_64/pmbs-0.1.0a3-1.fc42.x86_64.rpm
+          name: pmbs-0.1.0a4-1.fc42.x86_64.rpm
+          path: ~/rpmbuild/RPMS/x86_64/pmbs-0.1.0a4-1.fc42.x86_64.rpm
 
       # DEB (Ubuntu)
       - run: cd build-deb && make

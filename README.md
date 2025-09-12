@@ -43,7 +43,7 @@ recovery from snapshot).
   [release](https://github.com/fm-elpac/pmbs/releases):
 
   ```sh
-  sudo pacman -U pmbs-bin-0.1.0a3-1-x86_64.pkg.tar.zst
+  sudo pacman -U pmbs-bin-debug-0.1.0a4-1-x86_64.pkg.tar.zst
   ```
 
 - Fedora CoreOS (RPM):
@@ -54,7 +54,7 @@ recovery from snapshot).
   [release](https://github.com/fm-elpac/pmbs/releases):
 
   ```sh
-  sudo rpm-ostree install pmbs-0.1.0a3-1.fc42.x86_64.rpm
+  sudo rpm-ostree install pmbs-0.1.0a4-1.fc42.x86_64.rpm
   ```
 
   然后重启系统.
