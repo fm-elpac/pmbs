@@ -43,7 +43,7 @@ recovery from snapshot).
   [release](https://github.com/fm-elpac/pmbs/releases):
 
   ```sh
-  sudo pacman -U pmbs-bin-debug-0.1.0a4-1-x86_64.pkg.tar.zst
+  sudo pacman -U pmbs-bin-0.1.0a4-1-x86_64.pkg.tar.zst
   ```
 
 - Fedora CoreOS (RPM):
