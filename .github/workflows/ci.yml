@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
@@ -23,7 +23,7 @@ jobs:
 
       # release: x86_64-unknown-linux-gnu
       - run: cargo build --release
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: pmbs-x86_64
           path: target/release/pmbs
@@ -45,7 +45,7 @@ jobs:
           CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
           CC_aarch64_unknown_linux_gnu: aarch64-linux-gnu-gcc
           CXX_aarch64_unknown_linux_gnu: aarch64-linux-gnu-g++
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: pmbs-aarch64
           path: target/aarch64-unknown-linux-gnu/release/pmbs
@@ -55,7 +55,7 @@ jobs:
           CARGO_TARGET_RISCV64GC_UNKNOWN_LINUX_GNU_LINKER: riscv64-linux-gnu-gcc
           CC_riscv64gc_unknown_linux_gnu: riscv64-linux-gnu-gcc
           CXX_riscv64gc_unknown_linux_gnu: riscv64-linux-gnu-g++
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: pmbs-rv64gc
           path: target/riscv64gc-unknown-linux-gnu/release/pmbs
@@ -85,36 +85,36 @@ jobs:
           toolbox run -c arch \
           makepkg
       # upload pkg
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
-          name: pmbs-bin-0.1.0a4-1-x86_64.pkg.tar.zst
-          path: build-aur/pmbs-bin-0.1.0a4-1-x86_64.pkg.tar.zst
+          name: pmbs-bin-0.1.0-1-x86_64.pkg.tar.zst
+          path: build-aur/pmbs-bin-0.1.0-1-x86_64.pkg.tar.zst
 
       # RPM (Fedora)
-      - run: toolbox create -y -d fedora -r 42
+      - run: toolbox create -y -d fedora -r 43
       - run: |
-          toolbox run -c fedora-toolbox-42 \
+          toolbox run -c fedora-toolbox-43 \
           sudo dnf install -y rpm-build rpm-devel rpmdevtools make btrfs-progs
       - run: |
-          toolbox run -c fedora-toolbox-42 \
+          toolbox run -c fedora-toolbox-43 \
           rpmdev-setuptree
       - run: |
           cp build-rpm/pmbs.spec ~/rpmbuild/SPECS/ && \
           cp target/release/pmbs ~/rpmbuild/SOURCES/ && \
           cp pmbs-src.tar ~/rpmbuild/SOURCES/
       - run: |
-          toolbox run -c fedora-toolbox-42 \
+          toolbox run -c fedora-toolbox-43 \
           rpmbuild -bb ~/rpmbuild/SPECS/pmbs.spec
       # upload rpm
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
-          name: pmbs-0.1.0a4-1.fc42.x86_64.rpm
-          path: ~/rpmbuild/RPMS/x86_64/pmbs-0.1.0a4-1.fc42.x86_64.rpm
+          name: pmbs-0.1.0-1.fc43.x86_64.rpm
+          path: ~/rpmbuild/RPMS/x86_64/pmbs-0.1.0-1.fc43.x86_64.rpm
 
       # DEB (Ubuntu)
       - run: cd build-deb && make
       # upload deb
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: pmbs.deb
           path: build-deb/pmbs.deb

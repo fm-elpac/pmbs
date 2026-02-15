@@ -12,9 +12,6 @@ deb:
 	mkdir -p deb/usr/share/doc/pmbs
 	cp ../LICENSE deb/usr/share/doc/pmbs/copyright
 
-	gzip --best -nc changelog.Debian > changelog.Debian.gz
-	mv changelog.Debian.gz deb/usr/share/doc/pmbs
-
 	cd .. && make FROM=. TO=build-deb/deb install-config
 
 	dpkg-deb --root-owner-group --build deb

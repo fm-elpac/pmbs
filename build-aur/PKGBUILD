@@ -1,12 +1,12 @@
 # Maintainer: secext2022 <secext2022 at outlook dot com>
 pkgname=pmbs-bin
-pkgver=0.1.0a4
+pkgver=0.1.0
 pkgrel=1
 pkgdesc="Make btrfs snapshot (every minute), and auto clean"
 arch=('x86_64')
 url="https://github.com/fm-elpac/pmbs"
 license=('MIT')
-depends=('btrfs-progs>=6.16')
+depends=('btrfs-progs>=6.17')
 conflicts=('pmbs')
 optdepends=('rsync: send snapshot to remote machine')
 source=('pmbs'

@@ -1,11 +1,11 @@
 pkgbase = pmbs-bin
 	pkgdesc = Make btrfs snapshot (every minute), and auto clean
-	pkgver = 0.1.0a4
+	pkgver = 0.1.0
 	pkgrel = 1
 	url = https://github.com/fm-elpac/pmbs
 	arch = x86_64
 	license = MIT
-	depends = btrfs-progs>=6.16
+	depends = btrfs-progs>=6.17
 	optdepends = rsync: send snapshot to remote machine
 	conflicts = pmbs
 	source = pmbs

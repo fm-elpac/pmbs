@@ -43,7 +43,7 @@ recovery from snapshot).
   [release](https://github.com/fm-elpac/pmbs/releases):
 
   ```sh
-  sudo pacman -U pmbs-bin-0.1.0a4-1-x86_64.pkg.tar.zst
+  sudo pacman -U pmbs-bin-0.1.0-1-x86_64.pkg.tar.zst
   ```
 
 - Fedora CoreOS (RPM):
@@ -54,16 +54,40 @@ recovery from snapshot).
   [release](https://github.com/fm-elpac/pmbs/releases):
 
   ```sh
-  sudo rpm-ostree install pmbs-0.1.0a4-1.fc42.x86_64.rpm
+  sudo rpm-ostree install pmbs-0.1.0-1.fc43.x86_64.rpm
   ```
 
   然后重启系统.
 
   And reboot.
 
----
+<!--
+  ---
 
-安装之后 (after install):
+  启用 SELinux (可选):
+
+  Use SELinux (optional):
+
+  ```sh
+  sudo rpm-ostree install pmbs-selinux-0.1.0a5-1.fc43.noarch.rpm
+  ```
+
+  TODO
+-->
+
+### 安装之后 (after install)
+
+建议将 pmbs 用于保护 **用户数据**, 不建议用于创建 **系统快照**.
+
+Recommend to use pmbs for **user data**, not recommend for create **system
+snapshot**.
+
+原因: (1) 系统 (软件) 数据通常是允许丢失的 (比如 `/usr`),
+可以重新安装操作系统/软件, 很容易恢复. (2) 系统文件的修改通常不频繁,
+不需要分钟级快照 (小时级甚至天级快照已经足够). (3) 对系统创建快照更加复杂,
+且可能明显影响系统性能.
+
+---
 
 - (1) 编写配置文件, 比如:
 
@@ -83,9 +107,7 @@ recovery from snapshot).
   than the next rule, for example: `1m` (minute), `5m`, `1h` (hour), `1d` (day).
   Number to keep (`n`) should be larger than 0.
 
-  ---
-
-  **注意: 请关闭 btrfs `quota` !!** 当 quota 和大量 snapshot 同时使用,
+- (2) **注意: 请关闭 btrfs `quota` !!** 当 quota 和大量 snapshot 同时使用,
   系统会非常慢 (经常卡死). 检查 quota 是否启用, 比如:
 
   **Please disable btrfs `quota` !!** When quota is used with a lot snapshots,
@@ -109,7 +131,11 @@ recovery from snapshot).
   - <https://www.suse.com/support/kb/doc/?id=000020696>
   - <https://forums.gentoo.org/viewtopic-t-1164227-start-0.html>
 
-- (2) 启用 systemd 服务 (定期快照/清理):
+- (3) SELinux (Fedora CoreOS) (可选, optional):
+
+  TODO
+
+- (4) 启用 systemd 服务 (定期快照/清理):
 
   Enable systemd timer (snapshot/clean):
 
@@ -158,13 +184,15 @@ When any of the following is true, this repo should release a new version
 
 Current version number of important dependencies:
 
-- rustc 1.89.0 (29483883e 2025-08-04)
+- rustc 1.93.1 (01f6ddf75 2026-02-11)
 
   <https://github.com/rust-lang/rust>
 
 ## 文档 (doc)
 
 - 主要设计文档: [doc/pmbs.md](./doc/pmbs.md)
+
+- SELinux: [doc/selinux.md](./doc/selinux.md)
 
 TODO
 
