@@ -20,8 +20,12 @@ australis) 软件
 
 - <https://bitbucket.org/fm-elpac/pmbs/>
 - <https://codeberg.org/fm-elpac/pmbs>
+
+<!--
 - <https://notabug.org/fm-elpac/pmbs>
 - <https://framagit.org/fm-elpac/pmbs>
+-->
+
 - <https://git.disroot.org/fm-elpac/pmbs>
 - <https://git.pub.solar/fm-elpac/pmbs>
 - <https://gitlink.org.cn/fm-elpac/pmbs>
