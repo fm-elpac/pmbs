@@ -20,12 +20,7 @@ australis) 软件
 
 - <https://bitbucket.org/fm-elpac/pmbs/>
 - <https://codeberg.org/fm-elpac/pmbs>
-
-<!--
-- <https://notabug.org/fm-elpac/pmbs>
-- <https://framagit.org/fm-elpac/pmbs>
--->
-
+- <https://gitea.com/fm-elpac/pmbs>
 - <https://git.disroot.org/fm-elpac/pmbs>
 - <https://git.pub.solar/fm-elpac/pmbs>
 - <https://gitlink.org.cn/fm-elpac/pmbs>
@@ -47,7 +42,7 @@ recovery from snapshot).
   [release](https://github.com/fm-elpac/pmbs/releases):
 
   ```sh
-  sudo pacman -U pmbs-bin-0.1.0-1-x86_64.pkg.tar.zst
+  sudo pacman -U pmbs-bin-0.1.1-1-x86_64.pkg.tar.zst
   ```
 
 - Fedora CoreOS (RPM):
@@ -58,7 +53,7 @@ recovery from snapshot).
   [release](https://github.com/fm-elpac/pmbs/releases):
 
   ```sh
-  sudo rpm-ostree install pmbs-0.1.0-1.fc43.x86_64.rpm
+  sudo rpm-ostree install pmbs-0.1.1-1.fc44.x86_64.rpm
   ```
 
   然后重启系统.
@@ -73,7 +68,7 @@ recovery from snapshot).
   Use SELinux (optional):
 
   ```sh
-  sudo rpm-ostree install pmbs-selinux-0.1.0a5-1.fc43.noarch.rpm
+  sudo rpm-ostree install pmbs-selinux-0.1.1-1.fc44.noarch.rpm
   ```
 
   TODO
@@ -188,7 +183,7 @@ When any of the following is true, this repo should release a new version
 
 Current version number of important dependencies:
 
-- rustc 1.93.1 (01f6ddf75 2026-02-11)
+- rustc 1.97.1 (8bab26f4f 2026-07-14)
 
   <https://github.com/rust-lang/rust>
 
